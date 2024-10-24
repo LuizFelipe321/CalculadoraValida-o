@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Val.</title>
+    <style>
+        h1 {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin: 20px;
+            color: blue;
+            text-align: center; 
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px;
+        }
+        .pass {
+            color: green;
+        }
+        .fail {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora Validação</h1>
+    <div id="resultados"></div>
+
+    <script>
+        function somar(x, y) {
+            return x + y;
+        }
+
+        function subtrair(x, y) {
+            return x - y;
+        }
+
+        function multiplicar(x, y) {
+            return x * y;
+        }
+
+        function dividir(x, y) {
+            if (y === 0) {
+                throw new Error("Não é possível dividir por zero");
+            }
+            return x / y;
+        }
+
+        function mostrarResultado(mensagem, passou) {
+            const resultadoDiv = document.getElementById("resultados");
+            const resultado = document.createElement('p');
+            resultado.className = passou ? 'pass' : 'fail';
+            resultado.textContent = (passou ? 'V' : "X") + ' ' + mensagem;
+            resultadoDiv.appendChild(resultado);
+        }
+
+        function teste(mensagem, condicao) {
+            mostrarResultado(mensagem, condicao);
+        }
+
+        // Executando os testes
+        try {
+            // Testes corretos
+            teste('somar 2 + 3 deve resultar em 5', somar(2, 3) === 5);
+            teste('subtrair 5 - 3 deve resultar em 2', subtrair(5, 3) === 2);
+            teste('multiplicar 2 * 3 deve resultar em 6', multiplicar(2, 3) === 6);
+            teste('Dividir 6 / 3 deve resultar em 2', dividir(6, 3) === 2);
+
+            // Teste para divisão por 0
+            try {
+                dividir(6, 0);
+                teste('Dividir por zero deve lançar um erro', false); // deve falhar
+            } catch (erro) {
+                teste('dividir por zero deve lançar um erro', erro.message === 'Não é possível dividir por zero');
+            }
+
+            // Testes incorretos (para demonstração)
+            teste('somar 2 + 3 deve resultar em 6', somar(2, 3) === 6); // Deve falhar
+            teste('subtrair 5 - 3 deve resultar em 3', subtrair(5, 3) === 3); // Deve falhar
+            teste('multiplicar 2 * 3 deve resultar em 5', multiplicar(2, 3) === 5); // Deve falhar
+            teste('Dividir 6 / 3 deve resultar em 3', dividir(6, 3) === 3); // Deve falhar
+        } catch (erro) {
+            mostrarResultado('Erro inesperado: ' + erro.message, false);
+        }
+    </script>
+</body>
+</html>
+
